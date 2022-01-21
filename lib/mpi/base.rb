@@ -40,6 +40,7 @@ module MPI
     end
 
     def build_request_xml(method, query)
+      proc_code = (@env == "prod" ? "P" : "T")
       request_xml = Nokogiri::XML::DocumentFragment.parse <<-EOXML
 <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
 <s:Body>
@@ -50,8 +51,8 @@ module MPI
   <creationTime value="20211026150301" /> <!-- date of request -->
   <versionCode code="4.1"/> <!-- should be this value unless specified otherwise -->
   <interactionId root="2.16.840.1.113883.1.6" extension="PRPA_IN201305UV02" />
-  <processingCode code="T" /> <!-- T=test, all non-PROD;  P=PROD -->
-  <processingModeCode code="T" />
+  <processingCode code="#{proc_code}" /> <!-- T=test, all non-PROD;  P=PROD -->
+  <processingModeCode code="#{proc_code}" />
   <acceptAckCode code="AL" />
   <receiver typeCode="RCV">
     <device classCode="DEV" determinerCode="INSTANCE">
